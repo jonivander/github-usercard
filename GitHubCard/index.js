@@ -5,6 +5,14 @@ import axios from 'axios';
     https://api.github.com/users/<your name>
 */
 axios.get('https://api.github.com/users/jonivander')
+  .then(response => {
+    console.log(response.data)
+  })
+  .catch(error => { 
+    console.log(error)
+  })
+
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -64,7 +72,32 @@ function idCardMaker (person){
   const following = document.createElement('p')
   const bio = document.createElement('p')
 
+  card.appendChild(image)
+  card.appendChild(cardInfo)
+  cardInfo.appendChild(name)
+  cardInfo.appendChild(userName)
+  cardInfo.appendChild(location)
+  cardInfo.appendChild(profile)
+  profile.appendChild(gitAddress)
+  cardInfo.appendChild(followers)
+  cardInfo.appendChild(following)
+  cardInfo.appendChild(bio)
+
+  card.className = 'card'
+  cardInfo.className = 'card-info'
+  name.className = 'name'
+  userName.className = 'username'
+
+  image.src = person.avatar_url
+  name.textContent = person.name
+  userName.textContent = person.login
+  location.textContent = person.location
+  gitAddress.src = person.html_url
+  followers.textContent = person.followers
+  following.textContent = person.following
+  bio.textContent = person.bio
   
+return card
 }
 
 /*
