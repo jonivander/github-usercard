@@ -4,13 +4,27 @@ import axios from 'axios';
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-axios.get('https://api.github.com/users/jonivander')
+function lorem (param) {
+  axios
+  .get(param)
   .then(response => {
-    console.log(response.data)
+    const personInfo = response.data
+    const cards = document.querySelector('.cards')
+    cards.appendChild(idCardMaker(personInfo))
+    const personFollowers = `${param}/followers`
+    axios
+    .get(personFollowers)
+    .then(response => {
+      const followerInfo = response.data
+      followerInfo.forEach(element =>{
+        cards.appendChild(idCardMaker(element))
+      })
+    })
   })
   .catch(error => { 
     console.log(error)
-  })
+  }) 
+}
 
 
 /*
@@ -37,7 +51,24 @@ axios.get('https://api.github.com/users/jonivander')
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'jonivander',
+  'avawing',
+  'OrlandoDavila',
+  'danielantonio',
+  'sami-alaloosi',
+  'emcleary',
+];
+
+const newArray = followersArray.map(object => {
+  return `https://api.github.com/users/${object}`
+})
+
+newArray.forEach(element =>{
+  lorem(element)
+})
+
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -62,7 +93,7 @@ const followersArray = [];
 function idCardMaker (person){
   const card = document.createElement('div')
   const image = document.createElement('img')
-  const cardInfo = document.createElement('card-info')
+  const cardInfo = document.createElement('div')
   const name = document.createElement('h3')
   const userName = document.createElement('p')
   const location = document.createElement('p')
@@ -87,18 +118,23 @@ function idCardMaker (person){
   cardInfo.className = 'card-info'
   name.className = 'name'
   userName.className = 'username'
+  gitAddress.setAttribute('href', person.html_url)
 
   image.src = person.avatar_url
   name.textContent = person.name
   userName.textContent = person.login
   location.textContent = person.location
-  gitAddress.src = person.html_url
-  followers.textContent = person.followers
-  following.textContent = person.following
-  bio.textContent = person.bio
+  gitAddress.textContent = person.html_url
+  profile.textContent = `Profile:`
+  followers.textContent = `Followers: ${person.followers}`
+  following.textContent = `Following: ${person.following}`
+  bio.textContent = `Bio: ${person.bio}`
   
+console.log(card)
+console.log(gitAddress)
 return card
 }
+
 
 /*
   List of LS Instructors Github username's:
